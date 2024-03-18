@@ -1,0 +1,3 @@
+[submodule "Drivers/STM32WBxx_HAL_Driver"]
+	path = Drivers/STM32WBxx_HAL_Driver
+	url = https://github.com/STMicroelectronics/stm32wbxx_hal_driver.git
