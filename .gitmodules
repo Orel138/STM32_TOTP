@@ -4,3 +4,6 @@
 [submodule "Drivers/BSP/STM32WB5MM-DK"]
 	path = Drivers/BSP/STM32WB5MM-DK
 	url = https://github.com/STMicroelectronics/stm32wb5mm-dk-bsp.git
+[submodule "Drivers/CMSIS/Device/ST/STM32WBxx"]
+	path = Drivers/CMSIS/Device/ST/STM32WBxx
+	url = https://github.com/STMicroelectronics/cmsis_device_wb.git
