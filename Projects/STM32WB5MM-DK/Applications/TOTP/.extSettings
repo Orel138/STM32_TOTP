@@ -3,6 +3,7 @@ HeaderPath=..\..\..\..\..\Drivers\BSP\STM32WB5MM-DK;..\..\..\..\..\Drivers\BSP\C
 [Others]
 Define=USE_STM32WB5M_DK
 [Groups]
-Drivers/BSP/STM32WB5MM-DK=../../../../../Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk.c;../../../../../Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk_bus.c;../../../../../Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk_lcd.c;../../../../../Drivers/BSP/Components/ssd1315/ssd1315.c;../../../../../Drivers/BSP/Components/ssd1315/ssd1315_reg.c;
+Drivers/BSP/STM32WB5MM-DK=../../../../../Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk.c;../../../../../Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk_bus.c;../../../../../Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk_lcd.c;
+Drivers/BSP/ssd1315=../../../../../Drivers/BSP/Components/ssd1315/ssd1315.c;../../../../../Drivers/BSP/Components/ssd1315/ssd1315_reg.c;
 Doc=../readme.txt;
 Utilities=../../../../../Utilities/LCD/stm32_lcd.c
