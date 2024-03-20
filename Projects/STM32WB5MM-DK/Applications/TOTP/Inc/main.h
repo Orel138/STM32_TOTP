@@ -31,7 +31,10 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stm32wb5mm_dk.h"
+#include "stm32wb5mm_dk_bus.h"
+#include "stm32wb5mm_dk_lcd.h"
+#include "stm32_lcd.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
