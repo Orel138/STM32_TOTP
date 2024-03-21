@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -51,6 +52,7 @@ RTC_HandleTypeDef hrtc;
 
 TIM_HandleTypeDef htim1;
 
+osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -66,6 +68,8 @@ static void MX_USART1_UART_Init(void);
 static void MX_RTC_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_RF_Init(void);
+void StartDefaultTask(void const * argument);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -117,23 +121,39 @@ int main(void)
   /* USER CODE BEGIN 2 */
   BSP_SPI1_Init();
 
-  	BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE);
-	/* Set LCD Foreground Layer  */
-	UTIL_LCD_SetFuncDriver(&LCD_Driver); /* SetFunc before setting device */
-	UTIL_LCD_SetDevice(0);            /* SetDevice after funcDriver is set */
-	BSP_LCD_Clear(0,SSD1315_COLOR_BLACK);
-	BSP_LCD_DisplayOn(0);
-	BSP_LCD_Refresh(0);
-	UTIL_LCD_SetFont(&Font12);
-	/* Set the LCD Text Color */
-	UTIL_LCD_SetTextColor(SSD1315_COLOR_WHITE);
-	UTIL_LCD_SetBackColor(SSD1315_COLOR_BLACK);
-	BSP_LCD_Clear(0,SSD1315_COLOR_BLACK);
-	BSP_LCD_Refresh(0);
-	UTIL_LCD_DisplayStringAt(0, 0, (uint8_t *)"STM32 TOTP", CENTER_MODE);
-	BSP_LCD_Refresh(0);
+
 
   /* USER CODE END 2 */
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* definition and creation of defaultTask */
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -580,10 +600,10 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Channel1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
   /* DMA1_Channel2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
 
 }
@@ -707,6 +727,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIO_SELECT1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PE0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF14_TIM16;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
@@ -714,6 +742,62 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void const * argument)
+{
+  /* USER CODE BEGIN 5 */
+
+	BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE);
+	/* Set LCD Foreground Layer  */
+	UTIL_LCD_SetFuncDriver(&LCD_Driver); /* SetFunc before setting device */
+	UTIL_LCD_SetDevice(0);            /* SetDevice after funcDriver is set */
+	BSP_LCD_Clear(0,SSD1315_COLOR_BLACK);
+	BSP_LCD_DisplayOn(0);
+	BSP_LCD_Refresh(0);
+	UTIL_LCD_SetFont(&Font12);
+	/* Set the LCD Text Color */
+	UTIL_LCD_SetTextColor(SSD1315_COLOR_WHITE);
+	UTIL_LCD_SetBackColor(SSD1315_COLOR_BLACK);
+	BSP_LCD_Clear(0,SSD1315_COLOR_BLACK);
+	BSP_LCD_Refresh(0);
+	UTIL_LCD_DisplayStringAt(0, 0, (uint8_t *)"STM32 TOTP", CENTER_MODE);
+	BSP_LCD_Refresh(0);
+
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END 5 */
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM16 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM16) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
