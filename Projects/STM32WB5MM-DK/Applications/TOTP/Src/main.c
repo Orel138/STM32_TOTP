@@ -54,7 +54,7 @@ TIM_HandleTypeDef htim1;
 
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
-
+aPwmLedGsData_TypeDef aPwmLedGsData_app;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -96,7 +96,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  aPwmLedGsData_app[PWM_LED_RED]   = PWM_LED_GSDATA_OFF;
+  aPwmLedGsData_app[PWM_LED_GREEN] = PWM_LED_GSDATA_OFF;
+  aPwmLedGsData_app[PWM_LED_BLUE]  = PWM_LED_GSDATA_OFF;
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -120,8 +122,6 @@ int main(void)
   MX_RF_Init();
   /* USER CODE BEGIN 2 */
   BSP_SPI1_Init();
-
-
 
   /* USER CODE END 2 */
 
@@ -770,10 +770,21 @@ void StartDefaultTask(void const * argument)
 	UTIL_LCD_DisplayStringAt(0, 0, (uint8_t *)"STM32 TOTP", CENTER_MODE);
 	BSP_LCD_Refresh(0);
 
+	BSP_PWM_LED_Init();
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	aPwmLedGsData_app[PWM_LED_GREEN]  = PWM_LED_GSDATA_OFF;
+	BSP_PWM_LED_On(aPwmLedGsData_app);
+
+    osDelay(500);
+
+    aPwmLedGsData_app[PWM_LED_GREEN] = PWM_LED_GSDATA_7_0;
+    BSP_PWM_LED_On(aPwmLedGsData_app);
+
+    osDelay(500);
+
   }
   /* USER CODE END 5 */
 }
