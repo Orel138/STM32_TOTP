@@ -52,7 +52,20 @@ RTC_HandleTypeDef hrtc;
 
 TIM_HandleTypeDef htim1;
 
-osThreadId defaultTaskHandle;
+/* Definitions for Init */
+osThreadId_t InitHandle;
+const osThreadAttr_t Init_attributes = {
+  .name = "Init",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 1024 * 4
+};
+/* Definitions for Heartbeat */
+osThreadId_t HeartbeatHandle;
+const osThreadAttr_t Heartbeat_attributes = {
+  .name = "Heartbeat",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 4
+};
 /* USER CODE BEGIN PV */
 aPwmLedGsData_TypeDef aPwmLedGsData_app;
 /* USER CODE END PV */
@@ -68,7 +81,8 @@ static void MX_USART1_UART_Init(void);
 static void MX_RTC_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_RF_Init(void);
-void StartDefaultTask(void const * argument);
+void vInitTask(void *argument);
+void vHeartbeatTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -125,6 +139,9 @@ int main(void)
 
   /* USER CODE END 2 */
 
+  /* Init scheduler */
+  osKernelInitialize();
+
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
@@ -142,13 +159,19 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  /* creation of Init */
+  InitHandle = osThreadNew(vInitTask, NULL, &Init_attributes);
+
+  /* creation of Heartbeat */
+  HeartbeatHandle = osThreadNew(vHeartbeatTask, NULL, &Heartbeat_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
   osKernelStart();
@@ -743,14 +766,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_vInitTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the Init thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
+/* USER CODE END Header_vInitTask */
+void vInitTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
 
@@ -775,18 +798,35 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	aPwmLedGsData_app[PWM_LED_GREEN]  = PWM_LED_GSDATA_OFF;
-	BSP_PWM_LED_On(aPwmLedGsData_app);
-
-    osDelay(500);
-
-    aPwmLedGsData_app[PWM_LED_GREEN] = PWM_LED_GSDATA_7_0;
-    BSP_PWM_LED_On(aPwmLedGsData_app);
-
-    osDelay(500);
-
+	  osDelay(1);
   }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_vHeartbeatTask */
+/**
+* @brief Function implementing the Heartbeat thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_vHeartbeatTask */
+void vHeartbeatTask(void *argument)
+{
+  /* USER CODE BEGIN vHeartbeatTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    aPwmLedGsData_app[PWM_LED_RED]  = PWM_LED_GSDATA_OFF;
+	BSP_PWM_LED_On(aPwmLedGsData_app);
+
+	osDelay(500);
+
+	aPwmLedGsData_app[PWM_LED_RED] = PWM_LED_GSDATA_7_0;
+	BSP_PWM_LED_On(aPwmLedGsData_app);
+
+	osDelay(500);
+  }
+  /* USER CODE END vHeartbeatTask */
 }
 
 /**
