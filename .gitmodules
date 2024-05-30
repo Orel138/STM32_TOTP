@@ -1,3 +1,7 @@
 [submodule "Middlewares/Third_Party/ARM/mbedtls"]
 	path = Middlewares/Third_Party/ARM/mbedtls
 	url = https://github.com/Mbed-TLS/mbedtls.git
+	fetchRecurseSubmodules = false
+[submodule "Middlewares/Third_Party/FreeRTOS/FreeRTOS-Kernel"]
+	path = Middlewares/Third_Party/FreeRTOS/FreeRTOS-Kernel
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
