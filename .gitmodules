@@ -5,3 +5,13 @@
 [submodule "Middlewares/Third_Party/FreeRTOS/FreeRTOS-Kernel"]
 	path = Middlewares/Third_Party/FreeRTOS/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
+	fetchRecurseSubmodules = false
+[submodule "Drivers/STM32WBxx_HAL_Driver"]
+	path = Drivers/STM32WBxx_HAL_Driver
+	url = https://github.com/STMicroelectronics/stm32wbxx_hal_driver.git
+[submodule "Drivers/BSP/STM32WB5MM-DK"]
+	path = Drivers/BSP/STM32WB5MM-DK
+	url = https://github.com/STMicroelectronics/stm32wb5mm-dk-bsp.git
+[submodule "Drivers/CMSIS/Device/ST/STM32WBxx"]
+	path = Drivers/CMSIS/Device/ST/STM32WBxx
+	url = https://github.com/STMicroelectronics/cmsis_device_wb.git
