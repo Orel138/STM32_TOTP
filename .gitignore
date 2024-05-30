@@ -1,0 +1,9 @@
+
+# STM32 Project output
+**/Debug/
+
+# Eclipse launch configuration
+*.launch
+
+# Eclipse settings
+*.settings/
