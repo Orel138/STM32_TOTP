@@ -1,3 +1,4 @@
 # Exclude third-party libraries from language statistics
 Drivers/** linguist-vendored
 Middlewares/** linguist-vendored
+Utilities/** linguist-vendored
