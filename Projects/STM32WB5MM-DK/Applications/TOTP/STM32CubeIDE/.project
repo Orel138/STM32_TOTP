@@ -186,6 +186,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/crypto/rng_alt_stm32.c</locationURI>
 		</link>
 		<link>
+			<name>Application/User/crypto/sha1.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/crypto/sha1.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/crypto/totp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/crypto/totp.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk.c</name>
 			<type>1</type>
 			<locationURI>PARENT-5-PROJECT_LOC/Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk.c</locationURI>

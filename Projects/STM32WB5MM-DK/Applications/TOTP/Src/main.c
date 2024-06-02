@@ -33,6 +33,9 @@
 #include "semphr.h"
 
 #include "cli.h"
+
+#include "totp.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -81,6 +84,23 @@ void LED_Off(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+uint32_t get_current_unix_time() {
+    return 1719835200; // Pour débogage, heure fixe : 1er juin 2024 à 12h00 UTC
+}
+
+static void totp_task(void *pvParameters) {
+    const uint8_t key[] = "12345678901234567890";
+    size_t key_length = strlen((const char*)key);
+    totp_init(key, key_length, 30); // Initialize TOTP with key and 30s time step
+
+    while (1) {
+    	uint32_t current_time = get_current_unix_time();
+		uint32_t totp = generate_totp(current_time);
+		LogInfo("Current TOTP: %06u\n", totp);
+		vTaskDelay(pdMS_TO_TICKS(10000));
+    }
+}
 
 static void vHeartbeatTask( void * pvParameters )
 {
@@ -213,6 +233,9 @@ void vInitTask( void * pvArgs )
     configASSERT( xResult == pdTRUE );
 
     xResult = xTaskCreate( vHeartbeatTask, "Heartbeat", 128, NULL, tskIDLE_PRIORITY, NULL );
+    configASSERT( xResult == pdTRUE );
+
+    xTaskCreate(totp_task, "TOTP Task", 2048, NULL, 1, NULL);
     configASSERT( xResult == pdTRUE );
 
 //    xResult = xTaskCreate( vSensorsTask, "Sensors", 2048, NULL, tskIDLE_PRIORITY, NULL );
