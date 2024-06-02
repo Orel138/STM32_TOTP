@@ -181,6 +181,11 @@
 			<locationURI>PARENT-5-PROJECT_LOC/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_ll_rcc.c</locationURI>
 		</link>
 		<link>
+			<name>Application/User/crypto/rng_alt_stm32.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/crypto/rng_alt_stm32.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk.c</name>
 			<type>1</type>
 			<locationURI>PARENT-5-PROJECT_LOC/Drivers/BSP/STM32WB5MM-DK/stm32wb5mm_dk.c</locationURI>
@@ -564,6 +569,11 @@
 			<name>Application/User/Common/cli/logging.c</name>
 			<type>1</type>
 			<locationURI>PARENT-4-PROJECT_LOC/Common/cli/logging.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/Common/net/mbedtls_transport.c</name>
+			<type>1</type>
+			<locationURI>PARENT-4-PROJECT_LOC/Common/net/mbedtls_transport.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/Common/sys/mbedtls_freertos_port.c</name>

@@ -46,6 +46,7 @@ extern "C" {
 /* USER CODE BEGIN ET */
 extern TIM_HandleTypeDef htim16;
 extern UART_HandleTypeDef huart1;
+extern RNG_HandleTypeDef hrng;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

@@ -215,11 +215,11 @@ void vInitTask( void * pvArgs )
     xResult = xTaskCreate( vHeartbeatTask, "Heartbeat", 128, NULL, tskIDLE_PRIORITY, NULL );
     configASSERT( xResult == pdTRUE );
 
-    xResult = xTaskCreate( vSensorsTask, "Sensors", 2048, NULL, tskIDLE_PRIORITY, NULL );
-    configASSERT( xResult == pdTRUE );
-
-    xResult = xTaskCreate( vLCDScreenTask, "LCDScreen", 2048, NULL, tskIDLE_PRIORITY, NULL );
-    configASSERT( xResult == pdTRUE );
+//    xResult = xTaskCreate( vSensorsTask, "Sensors", 2048, NULL, tskIDLE_PRIORITY, NULL );
+//    configASSERT( xResult == pdTRUE );
+//
+//    xResult = xTaskCreate( vLCDScreenTask, "LCDScreen", 2048, NULL, tskIDLE_PRIORITY, NULL );
+//    configASSERT( xResult == pdTRUE );
 
     ( void ) xEventGroupSetBits( xSystemEvents, EVT_MASK_INIT );
 
@@ -395,7 +395,7 @@ void MX_RNG_Init(void)
 
   /* USER CODE END RNG_Init 1 */
   hrng.Instance = RNG;
-  hrng.Init.ClockErrorDetection = RNG_CED_ENABLE;
+  hrng.Init.ClockErrorDetection = RNG_CED_DISABLE;
   if (HAL_RNG_Init(&hrng) != HAL_OK)
   {
     Error_Handler();
